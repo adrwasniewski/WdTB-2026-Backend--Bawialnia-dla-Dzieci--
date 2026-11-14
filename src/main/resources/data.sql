@@ -28,16 +28,48 @@ INSERT INTO offer (name, price, duration_minutes, active) VALUES
                                                               ('Pakiet urodzinowy', 350.00, 180, true);
 
 
--- ===== LAB 02: rezerwacje =====
+-- ===== LAB 03: klienci =====
+
+INSERT INTO customer
+(full_name, phone, registered_on, active, user_account_id)
+VALUES
+    ('Firma Example', '600100200', '2026-11-14', true, 4 ),
+    ('Jan Nowak', '600200300', '2026-11-14', true, null),
+    ('Maria Wiśniewska', '600300400', '2026-11-14', true, null);
+
+
+
+-- ===== LAB 02 i LAB 03: rezerwacje =====
 
 INSERT INTO reservation
-(customer_name, children_count, status, starts_at, ends_at)
+(customer_name, children_count, status, starts_at, ends_at,
+ play_room_id, offer_id, customer_id)
 VALUES
     ('Anna Kowalska', 8, 'NEW',
-     '2026-11-14 10:00:00', '2026-11-14 12:00:00'),
+     '2026-11-14 10:00:00', '2026-11-14 12:00:00', 1, 2, 1),
 
     ('Jan Nowak', 12, 'CONFIRMED',
-     '2026-11-15 14:00:00', '2026-11-15 17:00:00'),
+     '2026-11-15 14:00:00', '2026-11-15 17:00:00', 1, 3, 2),
 
     ('Maria Wiśniewska', 6, 'CANCELLED',
-     '2026-11-16 11:00:00', '2026-11-16 13:00:00');
+     '2026-11-16 11:00:00', '2026-11-16 13:00:00', 2, 2, 3);
+
+-- ===== LAB 03: dodatki =====
+
+INSERT INTO extra (name, price, description, active) VALUES
+    ('Animator', 150.00, 'Zajęcia z animatorem', true),
+    ('Tort urodzinowy', 120.00, 'Tort dla gości', true),
+    ('Dekoracja sali', 80.00, 'Dekoracja tematyczna', true);
+
+
+
+
+-- ===== LAB 03: dodatki do rezerwacji =====
+
+INSERT INTO reservation_extra (reservation_id, extra_id) VALUES
+    (1, 1),
+    (2, 1),
+    (2, 2),
+    (2, 3),
+    (3, 1);
+

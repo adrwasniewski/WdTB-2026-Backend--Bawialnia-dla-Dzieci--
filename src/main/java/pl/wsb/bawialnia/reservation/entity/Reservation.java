@@ -13,6 +13,14 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import pl.wsb.bawialnia.room.entity.PlayRoom;
+import pl.wsb.bawialnia.offer.entity.Offer;
+import pl.wsb.bawialnia.customer.entity.Customer;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import pl.wsb.bawialnia.extra.entity.Extra;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "reservation")
@@ -34,6 +42,25 @@ public class Reservation {
 
     @Embedded
     private ReservationPeriod period;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "play_room_id", nullable = false)
+    private PlayRoom playRoom;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "customer_id", nullable = false)
+    private Customer customer;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "offer_id", nullable = false)
+    private Offer offer;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "reservation_extra",
+            joinColumns = @JoinColumn(name = "reservation_id"),
+            inverseJoinColumns = @JoinColumn(name = "extra_id")
+    )
+    private Set<Extra> extras = new HashSet<>();
 
     protected Reservation() {
     }
@@ -42,14 +69,19 @@ public class Reservation {
             String customerName,
             Integer childrenCount,
             ReservationStatus status,
-            ReservationPeriod period
+            ReservationPeriod period,
+            PlayRoom playRoom,
+            Offer offer,
+            Customer customer
     ) {
         this.customerName = customerName;
         this.childrenCount = childrenCount;
         this.status = status;
         this.period = period;
+        this.playRoom = playRoom;
+        this.offer = offer;
+        this.customer = customer;
     }
-
     public Long getId() {
         return id;
     }
@@ -69,4 +101,12 @@ public class Reservation {
     public ReservationPeriod getPeriod() {
         return period;
     }
+
+    public PlayRoom getPlayRoom() { return playRoom; }
+
+    public Offer getOffer() { return offer; }
+
+    public Set<Extra> getExtras() { return extras; }
+
+    public Customer getCustomer() { return customer; }
 }

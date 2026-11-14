@@ -9,6 +9,12 @@ import jakarta.persistence.Table;
 
 import java.math.BigDecimal;
 
+import jakarta.persistence.OneToMany;
+import pl.wsb.bawialnia.reservation.entity.Reservation;
+
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "play_room")
 public class PlayRoom {
@@ -28,6 +34,9 @@ public class PlayRoom {
 
     @Column(name = "active", nullable = false)
     private Boolean active;
+
+    @OneToMany(mappedBy = "playRoom")
+    private List<Reservation> reservations = new ArrayList<>();
 
     protected PlayRoom() {
     }
@@ -58,4 +67,6 @@ public class PlayRoom {
     public Boolean getActive() {
         return active;
     }
+
+    public List<Reservation> getReservations() { return reservations; }
 }
